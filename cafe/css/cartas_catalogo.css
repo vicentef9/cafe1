@@ -1,0 +1,223 @@
+/* Modernización catálogo de productos */
+body, .main-content {
+    background: #f1f3f6 !important;
+}
+
+/* Búsqueda y filtros para catálogo */
+.catalog-search-filters {
+    background: #f8fafc;
+    border-radius: 12px;
+    box-shadow: 0 1px 6px rgba(58,123,213,0.04);
+    padding: 18px 24px 8px 24px;
+    margin-bottom: 28px;
+    border: 1px solid #e0e6ed;
+}
+
+.catalog-search-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.catalog-search-bar input {
+    background: #f1f3f6;
+    border: 1px solid #dbe3ea;
+    border-radius: 6px;
+    padding: 7px 12px;
+    font-size: 1em;
+    flex: 1;
+}
+
+.catalog-filters {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.catalog-filter-group label {
+    font-weight: 500;
+    color: #3a7bd5;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.catalog-filter-group select {
+    background: #f1f3f6;
+    border: 1px solid #dbe3ea;
+    border-radius: 6px;
+    padding: 7px 12px;
+    font-size: 1em;
+    min-width: 120px;
+}
+
+/* Tarjetas de productos */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: flex-start;
+    margin-top: 32px;
+}
+
+.card {
+    background: linear-gradient(135deg, #f8fafc 60%, #e3e8ef 100%);
+    border-radius: 18px;
+    box-shadow: 0 2px 16px rgba(58,123,213,0.08);
+    width: 260px;
+    min-height: 360px;
+    perspective: 1000px;
+    transition: box-shadow 0.2s;
+    position: relative;
+    margin-bottom: 24px;
+}
+.card:hover {
+    box-shadow: 0 6px 24px rgba(58,123,213,0.14);
+}
+
+.card-front, .card-back {
+    border-radius: 18px;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    transition: transform 0.6s cubic-bezier(.4,2,.6,1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 18px 18px 18px;
+    box-sizing: border-box;
+}
+
+.card-front {
+    z-index: 2;
+    background: transparent;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+    background: #e3e8ef;
+    color: #3a7bd5;
+    z-index: 1;
+}
+
+.card.flipped .card-front {
+    transform: rotateY(180deg);
+}
+.card.flipped .card-back {
+    transform: rotateY(0deg);
+}
+
+.card-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(58,123,213,0.10);
+    background: #fff;
+}
+
+.card h3 {
+    color: #3a7bd5;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.card-btn {
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 22px;
+    font-size: 1em;
+    margin-top: 18px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    box-shadow: 0 1px 4px rgba(58,123,213,0.08);
+}
+.card-btn:hover {
+    background: #3a7bd5;
+    transform: scale(1.04);
+}
+
+.card-back p {
+    color: #222;
+    font-size: 1em;
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+/* Barra de búsqueda y filtro */
+.search-bar {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    margin-top: 18px;
+}
+.search-bar input, .search-bar select {
+    background: #f1f3f6;
+    border: 1px solid #dbe3ea;
+    border-radius: 7px;
+    padding: 10px 14px;
+    font-size: 1em;
+    color: #222;
+}
+.search-bar input:focus, .search-bar select:focus {
+    outline: none;
+    border-color: #3a7bd5;
+}
+
+/* Mensaje de no resultados */
+.no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6c757d;
+    font-style: italic;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e0e6ed;
+    margin-top: 20px;
+}
+
+.no-results p {
+    margin: 0;
+    font-size: 1.1em;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .card-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+    }
+    .main-content {
+        padding: 18px 6vw 18px 6vw;
+    }
+    .card {
+        width: 95vw;
+        min-width: 0;
+        max-width: 340px;
+    }
+    
+    .catalog-search-filters {
+        padding: 12px 16px;
+    }
+    
+    .catalog-search-bar {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .catalog-filters {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .catalog-filter-group select {
+        width: 100%;
+    }
+}

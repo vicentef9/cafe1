@@ -1,0 +1,651 @@
+/* =========================================
+   Variables y estilos base globales
+   ========================================= */
+:root {
+    --primary-color: #5C3317;    /* Marrón oscuro para sidebar */
+    --secondary-color: #D2691E;  /* Naranja pastel */
+    --background-color: #FFF8DC; /* Crema suave */
+    --text-color: #333;          /* Marrón oscuro */
+    --link-color: #663399;       /* Color para enlaces "Acceder" */
+    --error-color: #dc3545;      /* Rojo suave */
+    --success-color: #28a745;    /* Verde suave */
+    --sidebar-width: 250px;
+    --active-sidebar-link-bg: rgba(92, 51, 23, 0.3); /* Un marrón más oscuro y transparente */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f1f3f6;
+    color: #222;
+}
+
+/* Estilos generales para enlaces */
+a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   Estilos de Login
+   ========================================= */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.login-box {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(139, 69, 19, 0.1);
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid rgba(139, 69, 19, 0.1);
+}
+
+.login-box h1 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.form-group input {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.login-button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: var(--secondary-color);
+}
+
+/* =========================================
+   Layout General del Dashboard
+   ========================================= */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+}
+
+/* Estilos para la barra lateral */
+.sidebar {
+    background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+    color: #fff;
+    width: 220px;
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow-y: auto;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    padding: 10px 15px 15px 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    padding: 10px 0 5px 0;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1em;
+    letter-spacing: 0.5px;
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.nav-menu li {
+    margin: 8px 0;
+}
+
+.nav-menu li:last-child {
+    margin-top: auto;
+    margin-bottom: 10px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Ajuste del menú cuando no hay botón de logout */
+.nav-menu li:last-child:not(.logout-btn) {
+    border-top: none !important;
+    padding-top: 8px !important;
+}
+
+/* Mejoras adicionales para el menú lateral */
+.nav-menu a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 16px;
+    display: block;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.nav-menu a.active, .nav-menu a:hover {
+    background: rgba(255,255,255,0.15);
+    font-weight: 600;
+    transform: translateX(5px);
+}
+
+/* Estilos para el contenido principal */
+.main-content {
+    flex: 1;
+    padding: 30px;
+    margin-left: 220px;
+    padding: 32px 40px 32px 40px;
+    width: 100%;
+    min-height: 100vh;
+    background: #f1f3f6;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.dashboard-header h1 {
+    font-size: 2.1em;
+    color: #3a7bd5;
+}
+
+.add-button {
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 28px;
+    font-size: 1em;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(58,123,213,0.08);
+    transition: background 0.2s, transform 0.1s;
+}
+
+.add-button:hover {
+    background: #3a7bd5;
+    transform: scale(1.04);
+}
+
+/* Estilos para la cuadrícula de tarjetas del dashboard */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 32px;
+    padding: 24px 0;
+}
+
+.dashboard-card {
+    background: linear-gradient(135deg, #f8fafc 60%, #e3e8ef 100%);
+    border-radius: 18px;
+    box-shadow: 0 2px 16px rgba(58,123,213,0.08);
+    padding: 32px 24px 28px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: box-shadow 0.2s, transform 0.15s;
+    border: 1px solid #e0e6ed;
+    min-height: 210px;
+}
+
+.dashboard-card:hover {
+    box-shadow: 0 6px 24px rgba(58,123,213,0.14);
+    transform: translateY(-4px) scale(1.03);
+}
+
+.dashboard-card h3 {
+    color: #3a7bd5;
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.dashboard-card p {
+    color: #5c6b7a;
+    margin-bottom: 18px;
+    font-size: 1em;
+}
+
+.card-link {
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 28px;
+    font-size: 1em;
+    text-decoration: none;
+    font-weight: 500;
+    box-shadow: 0 1px 4px rgba(58,123,213,0.08);
+    transition: background 0.2s, transform 0.1s;
+    margin-top: auto;
+    display: inline-block;
+}
+
+.card-link:hover {
+    background: #3a7bd5;
+    transform: scale(1.04);
+    text-decoration: none;
+}
+
+/* Estilos para la información del usuario */
+.user-info {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-name {
+    display: block;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.logout-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #e74c3c;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+    background-color: #c0392b;
+}
+
+/* Estilos para el botón de cerrar sesión */
+.logout-btn {
+    background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%) !important;
+    border: 1px solid #ff4757 !important;
+    color: #fff !important;
+    margin-top: auto !important;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(255, 71, 87, 0.3);
+    font-weight: 600;
+    font-size: 0.85em !important;
+    padding: 8px 16px !important;
+}
+
+.logout-btn:hover {
+    background: linear-gradient(135deg, #ff3742 0%, #ff2531 100%) !important;
+    border: 1px solid #ff3742 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 71, 87, 0.4);
+}
+
+.logout-btn::before {
+    content: "🚪";
+    margin-right: 6px;
+    font-size: 1em;
+}
+
+/* Separador visual antes del botón de logout */
+.logout-btn::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* =========================================
+   Estilos de Modal y Formularios Generales
+   ========================================= */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #f8fafc;
+    margin: 40px auto;
+    border-radius: 16px;
+    padding: 32px 28px;
+    border: 1px solid #e0e6ed;
+    max-width: 900px;
+    min-width: 320px;
+    width: 98vw;
+    max-height: 92vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #3a7bd5 #f1f3f6;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    position: relative;
+    padding-bottom: 80px; /* Espacio para los botones fijos */
+}
+
+/* Scrollbar para navegadores Webkit */
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #3a7bd5;
+    border-radius: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #f1f3f6;
+    border-radius: 6px;
+}
+
+@media (max-width: 600px) {
+    .modal-content {
+        width: 99vw;
+        max-width: 99vw;
+        padding: 10px 5px 10px 5px;
+    }
+}
+
+.form-grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 24px;
+}
+
+.form-grid-2col .form-group {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.form-grid-2col .form-group label {
+    margin-bottom: 0.2rem;
+}
+
+@media (max-width: 700px) {
+    .form-grid-2col {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+}
+
+/* Estilos para el formulario */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #3a7bd5;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #dbe3ea;
+    border-radius: 6px;
+    background: #f1f3f6;
+    font-size: 1em;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3a7bd5;
+}
+
+.form-text {
+    font-size: 0.875rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+/* Estilos para los botones */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    background: #f8fafc;
+    padding: 16px 0 0 0;
+    z-index: 10;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.04);
+}
+
+.submit-button,
+.cancel-button {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button {
+    background-color: #3a7bd5;
+    color: white;
+}
+
+.submit-button:hover {
+    background-color: #2563a6;
+}
+
+.cancel-button {
+    background-color: #b0b0b0;
+    color: #fff;
+}
+
+.cancel-button:hover {
+    background-color: #888;
+}
+
+/* Estilos para los botones de acción en las tablas */
+.action-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    font-size: 0.875rem;
+    transition: background 0.2s;
+}
+
+.action-button.edit {
+    background-color: #ffc107;
+    color: #222;
+}
+
+.action-button.edit:hover {
+    background-color: #ffb300;
+}
+
+.action-button.delete {
+    background-color: #dc3545;
+    color: white;
+}
+
+.action-button.delete:hover {
+    background-color: #b71c1c;
+}
+
+/* Estilos para el estado */
+.status {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.98em;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.status.activo, .status.active {
+    background-color: #28a745;
+    color: white;
+}
+
+.status.inactivo, .status.inactive {
+    background-color: #b0b0b0;
+    color: white;
+}
+
+/* Estilos para las notificaciones */
+.notificacion {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    z-index: 1100;
+    animation: slideIn 0.3s ease-out;
+}
+
+.notificacion.success {
+    background-color: #28a745;
+}
+
+.notificacion.error {
+    background-color: #dc3545;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.close-button {
+    float: right;
+    font-size: 1.5em;
+    color: #888;
+    cursor: pointer;
+    margin-top: -12px;
+}
+
+.close-button:hover {
+    color: #dc3545;
+}
+
+/* =========================================
+   Responsive Design Global
+   ========================================= */
+@media (max-width: 900px) {
+    .main-content {
+        padding: 18px 6vw 18px 6vw;
+        margin-left: 0;
+    }
+    
+    .sidebar {
+        display: none; /* Ocultar sidebar en móviles - implementar menú hamburguesa */
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 12px 0;
+    }
+    
+    .dashboard-card {
+        padding: 24px 12px 20px 12px;
+        min-height: 160px;
+    }
+}
+
+/* Scrollbar personalizado para el sidebar */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+

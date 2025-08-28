@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "D:/Documents Alfredo/VSCode/LearnSpace"
+		},
+		{
+			"path": "D:/Documents Alfredo/GitHub"
+		},
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "D:/Documents Alfredo/VSCode/LearnSpace02"
+		},
+		{
+			"path": "D:/Documents Alfredo/juegos/World of Warcraft 3.3.5a/Interface/AddOns/MyUI"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "LearnSpace"
+	}
+}

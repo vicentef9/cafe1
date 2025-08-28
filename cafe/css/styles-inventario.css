@@ -1,0 +1,634 @@
+/* =========================
+   Estilos de Inventario - Cafetería
+   ========================= */
+
+/* Fondo principal */
+body, .main-content {
+    background: #f1f3f6 !important;
+}
+
+/* Correcciones para el layout principal */
+.main-content h1 {
+    color: #3a7bd5;
+    margin-bottom: 24px;
+    font-size: 2.2em;
+    font-weight: 600;
+}
+
+/* Botón de agregar producto */
+.add-product-btn {
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    box-shadow: 0 2px 8px rgba(58,123,213,0.2);
+    font-weight: 500;
+}
+
+.add-product-btn:hover {
+    background: #3a7bd5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(58,123,213,0.3);
+}
+
+/* Contenedores principales */
+.inventory-table-container {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(58,123,213,0.06);
+    padding: 0;
+    margin-bottom: 32px;
+    border: 1px solid #e0e6ed;
+    overflow: hidden;
+}
+
+/* Tablas de inventario */
+.inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.inventory-table thead th {
+    background: #3a7bd5;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 16px 12px;
+    text-align: left;
+    font-size: 0.95em;
+    border: none;
+}
+
+.inventory-table thead th:first-child {
+    border-top-left-radius: 12px;
+}
+
+.inventory-table thead th:last-child {
+    border-top-right-radius: 12px;
+}
+
+.inventory-table tbody td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #f0f2f5;
+    font-size: 0.95em;
+    vertical-align: middle;
+}
+
+.inventory-table tbody tr {
+    background: #ffffff;
+    transition: background-color 0.2s;
+}
+
+.inventory-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.inventory-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Alertas de stock */
+.stock-alert {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.98em;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.stock-alert.low {
+    background: #ffc107;
+    color: #222;
+}
+
+.stock-alert.critical {
+    background: #dc3545;
+    color: #fff;
+}
+
+.stock-alert.normal {
+    background: #28a745;
+    color: #fff;
+}
+
+/* Barra de búsqueda y filtros */
+.search-filters {
+    background: #f8fafc;
+    border-radius: 12px;
+    box-shadow: 0 1px 6px rgba(58,123,213,0.04);
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    border: 1px solid #e0e6ed;
+}
+
+.search-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    align-items: center;
+}
+
+.search-bar input[type="text"] {
+    background: #ffffff;
+    border: 1px solid #dbe3ea;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 1em;
+    flex: 1;
+    transition: border-color 0.2s;
+}
+
+.search-bar input[type="text"]:focus {
+    outline: none;
+    border-color: #3a7bd5;
+    box-shadow: 0 0 0 3px rgba(58,123,213,0.1);
+}
+
+.search-bar select {
+    background: #f1f3f6;
+    border: 1px solid #dbe3ea;
+    border-radius: 6px;
+    padding: 7px 12px;
+    font-size: 1em;
+    min-width: 150px;
+}
+
+.search-button {
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0 18px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.search-button:hover {
+    background: #3a7bd5;
+}
+
+.filters-container {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.filters-row {
+    display: flex;
+    gap: 20px;
+    align-items: end;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 140px;
+}
+
+.filter-group label {
+    font-weight: 500;
+    color: #3a7bd5;
+    margin-bottom: 6px;
+    font-size: 0.95em;
+}
+
+.filter-group select {
+    background: #ffffff;
+    border: 1px solid #dbe3ea;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 1em;
+    transition: border-color 0.2s;
+}
+
+.filter-group select:focus {
+    outline: none;
+    border-color: #3a7bd5;
+}
+
+/* Botones de acción */
+.action-button {
+    border: none;
+    border-radius: 7px;
+    padding: 7px 14px;
+    margin: 2px 0;
+    font-size: 0.98em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.action-button.edit {
+    background: #ffc107;
+    color: #222;
+}
+
+.action-button.edit:hover {
+    background: #ffb300;
+}
+
+.action-button.delete {
+    background: #dc3545;
+    color: #fff;
+}
+
+.action-button.delete:hover {
+    background: #b71c1c;
+}
+
+.action-button.restock {
+    background: #28a745;
+    color: #fff;
+}
+
+.action-button.restock:hover {
+    background: #218838;
+}
+
+/* Cards de resumen de inventario */
+.inventory-summary {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+}
+
+.summary-card {
+    background: linear-gradient(135deg, #f8fafc 60%, #e3e8ef 100%);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(58,123,213,0.06);
+    padding: 24px 32px;
+    min-width: 220px;
+    flex: 1 1 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    border: 1px solid #e0e6ed;
+    transition: box-shadow 0.2s;
+}
+
+.summary-card h3 {
+    font-size: 1.1em;
+    color: #3a7bd5;
+    margin-bottom: 8px;
+}
+
+.summary-card .amount {
+    font-size: 1.7em;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 4px;
+}
+
+.summary-card .sub-info {
+    font-size: 0.98em;
+    color: #5c6b7a;
+}
+
+/* Modal de inventario */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background: #f8fafc;
+    border-radius: 16px;
+    box-shadow: 0 2px 24px rgba(58,123,213,0.10);
+    border: 1px solid #e0e6ed;
+    padding: 32px 28px;
+    max-width: 480px;
+    margin: 5% auto;
+    position: relative;
+}
+
+.close-button {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 1.5em;
+    color: #888;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    color: #dc3545;
+}
+
+/* Formulario del modal */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #3a7bd5;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    background: #ffffff;
+    border: 1px solid #dbe3ea;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3a7bd5;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.submit-button {
+    background: #3a7bd5;
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.submit-button:hover {
+    background: #2563a6;
+}
+
+.cancel-button {
+    background: #6c757d;
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.cancel-button:hover {
+    background: #545b62;
+}
+
+.no-data {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    padding: 40px 20px;
+    background: #f8f9fa;
+}
+
+/* Responsive mejorado */
+@media (max-width: 900px) {
+    .inventory-header {
+        padding-right: 0;
+        text-align: center;
+    }
+    
+    .add-product-btn {
+        position: static;
+        margin-top: 16px;
+        width: 100%;
+    }
+    
+    .filters-row {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .filter-group {
+        width: 100%;
+    }
+    
+    .search-bar {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .inventory-table-container {
+        overflow-x: auto;
+    }
+    
+    .inventory-table {
+        min-width: 800px;
+    }
+}
+
+/* =============================
+   Estilos del Modal de Inventario
+   ============================= */
+
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e0e6ed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+    color: white;
+    border-radius: 12px 12px 0 0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.close {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0 5px;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.close:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#inventoryForm {
+    padding: 24px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 0.9em;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e0e6ed;
+    border-radius: 6px;
+    font-size: 0.95em;
+    transition: all 0.2s;
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3a7bd5;
+    box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e6ed;
+    margin-top: 24px;
+}
+
+.btn-cancel,
+.btn-save {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.btn-cancel {
+    background-color: #f7fafc;
+    color: #4a5568;
+    border: 1px solid #e0e6ed;
+}
+
+.btn-cancel:hover {
+    background-color: #edf2f7;
+}
+
+.btn-save {
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+    color: white;
+}
+
+.btn-save:hover {
+    background: #3a7bd5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(58, 123, 213, 0.3);
+}
+
+#precioFinal {
+    font-weight: bold;
+    color: #3a7bd5;
+    font-size: 1.1em;
+}
+
+/* Responsive para modal */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-cancel,
+    .btn-save {
+        width: 100%;
+    }
+}

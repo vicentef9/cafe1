@@ -1,0 +1,489 @@
+/* =========================
+   Estilos de Usuarios - Cafetería
+   ========================= */
+
+/* Header de usuarios */
+.users-header {
+    position: relative;
+    margin-bottom: 32px;
+}
+
+.users-header h1 {
+    color: #3a7bd5;
+    margin-bottom: 24px;
+    font-size: 2.2em;
+    font-weight: 600;
+}
+
+/* Botón de agregar usuario */
+.add-user-btn {
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    box-shadow: 0 2px 8px rgba(58,123,213,0.2);
+    font-weight: 500;
+}
+
+.add-user-btn:hover {
+    background: #3a7bd5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(58,123,213,0.3);
+}
+
+/* Fondo y contenedores principales */
+body, .main-content {
+    background: #f1f3f6 !important;
+}
+
+/* Contenedores principales */
+.users-table-container {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(58,123,213,0.06);
+    padding: 0;
+    margin-bottom: 32px;
+    border: 1px solid #e0e6ed;
+    overflow: hidden;
+}
+
+/* Tablas de usuarios */
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.users-table th {
+    background: #3a7bd5;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 16px 12px;
+    text-align: left;
+    font-size: 0.95em;
+    border: none;
+}
+
+.users-table th:first-child {
+    border-top-left-radius: 12px;
+}
+
+.users-table th:last-child {
+    border-top-right-radius: 12px;
+}
+
+.users-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #f0f2f5;
+    font-size: 0.95em;
+    vertical-align: middle;
+}
+
+.users-table tr {
+    background: #ffffff;
+    transition: background-color 0.2s;
+}
+
+.users-table tr:hover {
+    background: #f8fafc;
+}
+
+.users-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Barra de búsqueda y filtros */
+.search-filters {
+    background: #f8fafc;
+    border-radius: 12px;
+    box-shadow: 0 1px 6px rgba(58,123,213,0.04);
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    border: 1px solid #e0e6ed;
+}
+
+.search-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    align-items: center;
+}
+
+.search-bar input[type="text"] {
+    background: #ffffff;
+    border: 1px solid #dbe3ea;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 1em;
+    flex: 1;
+    transition: border-color 0.2s;
+}
+
+.search-bar input[type="text"]:focus {
+    outline: none;
+    border-color: #3a7bd5;
+}
+
+.search-button {
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+}
+
+.search-button:hover {
+    background: #3a7bd5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(58,123,213,0.3);
+}
+
+.filters-container {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-group label {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 6px;
+    display: block;
+    font-size: 0.9em;
+}
+
+.filter-group select {
+    background: #ffffff;
+    border: 1px solid #dbe3ea;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.95em;
+    transition: border-color 0.2s;
+}
+
+.filter-group select:focus {
+    outline: none;
+    border-color: #3a7bd5;
+}
+
+/* Botones de acción */
+.action-button {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    margin: 2px;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.action-button.edit {
+    background: #ffc107;
+    color: #222;
+}
+
+.action-button.edit:hover {
+    background: #ffb300;
+    transform: translateY(-1px);
+}
+
+.action-button.delete {
+    background: #dc3545;
+    color: #fff;
+}
+
+.action-button.delete:hover {
+    background: #b71c1c;
+    transform: translateY(-1px);
+}
+
+/* Estado y badges */
+.status {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.98em;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.status.active, .status.activo {
+    background: #28a745;
+    color: #fff;
+}
+
+.status.inactive, .status.inactivo {
+    background: #dc3545;
+    color: #fff;
+}
+
+/* =============================
+   Estilos del Modal de Usuarios
+   ============================= */
+
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #ffffff !important;
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+    border: none !important;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e0e6ed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+    color: white;
+    border-radius: 12px 12px 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.close-button {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0 5px;
+    border-radius: 50%;
+    transition: all 0.2s;
+    margin-top: 0;
+    float: none;
+}
+
+.close-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* Formulario del modal */
+#userForm {
+    padding: 24px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 24px;
+    background-color: #ffffff !important;
+}
+
+.form-grid-2col .form-group {
+    margin-bottom: 16px;
+}
+
+.form-grid-2col .form-group:nth-child(4),
+.form-grid-2col .form-actions {
+    grid-column: span 2;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 0.9em;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e0e6ed;
+    border-radius: 6px;
+    font-size: 0.95em;
+    transition: all 0.2s;
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3a7bd5;
+    box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e6ed;
+    margin-top: 24px;
+}
+
+.submit-button,
+.cancel-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.cancel-button {
+    background-color: #f7fafc;
+    color: #4a5568;
+    border: 1px solid #e0e6ed;
+}
+
+.cancel-button:hover {
+    background-color: #edf2f7;
+}
+
+.submit-button {
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+    color: white;
+}
+
+.submit-button:hover {
+    background: #3a7bd5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(58, 123, 213, 0.3);
+}
+
+/* Animaciones del modal */
+.modal.fade-out {
+    animation: modalFadeOut 0.3s ease-in forwards;
+}
+
+@keyframes modalFadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* Estilos específicos para el modal de usuarios */
+#userModal {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(5px);
+}
+
+#userModal .modal-content {
+    background-color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+#userModal .modal-header {
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%) !important;
+    color: white !important;
+}
+
+#userModal .form-grid-2col {
+    background-color: #ffffff !important;
+}
+
+/* Responsive para modal */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
+    
+    .form-grid-2col {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    
+    .form-grid-2col .form-group:nth-child(4),
+    .form-grid-2col .form-actions {
+        grid-column: span 1;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .submit-button,
+    .cancel-button {
+        width: 100%;
+    }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .filters-container {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .main-content {
+        padding: 18px 6vw 18px 6vw;
+    }
+    
+    .users-table-container {
+        padding: 14px 6vw;
+    }
+    
+    .search-bar {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .search-bar input,
+    .search-bar select {
+        width: 100%;
+    }
+}
