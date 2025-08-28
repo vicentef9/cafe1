@@ -45,12 +45,6 @@ session_start();
                 
                 <button type="submit" class="login-button">Iniciar Sesión</button>
             </form>
-            
-            <!-- Debug info -->
-            <div style="margin-top: 20px; font-size: 12px; color: #666;">
-                <p>Formulario apunta a: ../../php/procesar_login.php</p>
-                <p><a href="../../debug/test_simple.php">🔧 Test de credenciales</a></p>
-            </div>
         </div>
     </div>
 </body>
