@@ -76,14 +76,17 @@ session_start();
                         <div class="form-group">
                             <label for="nombre">Nombre</label>
                             <input type="text" id="nombre" name="nombre" required>
+                            <small class="form-hint">Solo letras y espacios permitidos</small>
                         </div>
                         <div class="form-group">
                             <label for="apellido">Apellido</label>
                             <input type="text" id="apellido" name="apellido" required>
+                            <small class="form-hint">Solo letras y espacios permitidos</small>
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="email" id="email" name="email" required>
+                            <small class="form-hint">Solo letras, números, @, puntos, guiones y guiones bajos</small>
                         </div>
                         <div class="form-group">
                             <label for="rol">Rol</label>
@@ -95,6 +98,7 @@ session_start();
                         <div class="form-group">
                             <label for="password">Contraseña</label>
                             <input type="password" id="password" name="password">
+                            <small class="form-hint">Letras, números y símbolos: !@#$%^&*()._-</small>
                             <small id="passwordHelp" class="form-text text-muted">Dejar en blanco para mantener la contraseña actual (solo en edición)</small>
                         </div>
                         <div class="form-group" id="estadoGroup" style="display: none;">

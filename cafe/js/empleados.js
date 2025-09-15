@@ -3,7 +3,9 @@ let empleados = [];
 let modoEdicion = false;
 
 // Cargar empleados al iniciar
-document.addEventListener('DOMContentLoaded', cargarEmpleados);
+document.addEventListener('DOMContentLoaded', function() {
+    cargarEmpleados();
+});
 
 // Función para cargar empleados
 async function cargarEmpleados() {
@@ -51,6 +53,68 @@ function actualizarTablaEmpleados() {
     });
 }
 
+// Función para agregar validaciones a los campos del modal
+function agregarValidacionesCampos() {
+    // Validación para nombre y apellido (solo letras)
+    const camposTexto = ['nombre', 'apellido'];
+    camposTexto.forEach(campo => {
+        const elemento = document.getElementById(campo);
+        if (elemento) {
+            // Remover y agregar solo el evento 'input' para validación
+            elemento.removeEventListener('input', validarTextoInput);
+            elemento.addEventListener('input', validarTextoInput);
+        }
+    });
+    
+    // Validación para email
+    const emailElement = document.getElementById('email');
+    if (emailElement) {
+        emailElement.removeEventListener('input', validarEmailInput);
+        emailElement.addEventListener('input', validarEmailInput);
+    }
+    
+    // Validación para contraseña
+    const passwordElement = document.getElementById('password');
+    if (passwordElement) {
+        passwordElement.removeEventListener('input', validarPasswordInput);
+        passwordElement.addEventListener('input', validarPasswordInput);
+    }
+}
+
+// Función auxiliar para validar texto en input
+function validarTextoInput() {
+    this.value = this.value.replace(/[^a-zA-ZÁÉÍÓÚáéíóúÑñ\s]/g, '');
+}
+
+// Función auxiliar para validar email en input
+function validarEmailInput() {
+    this.value = this.value.replace(/[^a-zA-Z0-9@._-]/g, '');
+}
+
+// Función auxiliar para validar contraseña en input
+function validarPasswordInput() {
+    this.value = this.value.replace(/[^a-zA-Z0-9!@#$%^&*()._-]/g, '');
+}
+
+// Función para prevenir entrada de números en campos de texto
+function bloquearNumeros(event) {
+    const char = String.fromCharCode(event.which || event.keyCode);
+    const regex = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]$/;
+    
+    // Permitir teclas especiales (backspace, delete, tab, escape, enter, etc.)
+    if (event.keyCode === 8 || event.keyCode === 9 || event.keyCode === 27 || 
+        event.keyCode === 13 || event.keyCode === 46 || 
+        (event.keyCode >= 35 && event.keyCode <= 40)) {
+        return true;
+    }
+    
+    if (!regex.test(char)) {
+        event.preventDefault();
+        return false;
+    }
+    return true;
+}
+
 // Mostrar el modal y bloquear scroll de fondo
 function mostrarFormulario() {
     modoEdicion = false;
@@ -62,6 +126,11 @@ function mostrarFormulario() {
     document.getElementById('estadoGroup').style.display = 'none';
     document.getElementById('employeeModal').style.display = 'block';
     document.body.style.overflow = 'hidden';
+    
+    // AGREGAR VALIDACIONES DESPUÉS DE MOSTRAR EL MODAL
+    setTimeout(() => {
+        agregarValidacionesCampos();
+    }, 100);
 }
 
 // Cerrar el modal y restaurar scroll
@@ -102,6 +171,11 @@ async function editarEmpleado(id) {
         document.getElementById('estadoGroup').style.display = 'block';
         document.getElementById('employeeModal').style.display = 'block';
         document.body.style.overflow = 'hidden';
+        
+        // AGREGAR VALIDACIONES DESPUÉS DE MOSTRAR EL MODAL
+        setTimeout(() => {
+            agregarValidacionesCampos();
+        }, 100);
     } catch (error) {
         mostrarNotificacion('Error al obtener datos del empleado', 'error');
     }
@@ -116,24 +190,42 @@ async function guardarEmpleado(event) {
     const email = document.getElementById('email').value.trim();
     const rol = document.getElementById('rol').value;
     const password = document.getElementById('password').value;
+    
     let errorMsg = '';
-    if (!nombre) errorMsg = 'El nombre es obligatorio';
-    else if (!apellido) errorMsg = 'El apellido es obligatorio';
-    else if (!email) errorMsg = 'El email es obligatorio';
-    else if (!rol) errorMsg = 'El rol es obligatorio';
+    
+    // Validar que nombre solo contenga letras
+    const regexLetras = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/;
+    
+    if (!nombre) {
+        errorMsg = 'El nombre es obligatorio';
+    } else if (!regexLetras.test(nombre)) {
+        errorMsg = 'El nombre solo puede contener letras y espacios';
+    } else if (!apellido) {
+        errorMsg = 'El apellido es obligatorio';
+    } else if (!regexLetras.test(apellido)) {
+        errorMsg = 'El apellido solo puede contener letras y espacios';
+    } else if (!email) {
+        errorMsg = 'El email es obligatorio';
+    } else if (!rol) {
+        errorMsg = 'El rol es obligatorio';
+    }
+    
     // Validar formato de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!errorMsg && !emailRegex.test(email)) {
         errorMsg = 'Por favor ingrese un email válido';
     }
+    
     // Validar contraseña en modo creación
     if (!modoEdicion && !password) {
         errorMsg = 'La contraseña es requerida para nuevos empleados';
     }
+    
     if (errorMsg) {
         mostrarNotificacion(errorMsg, 'error');
         return;
     }
+    
     const formData = {
         id: document.getElementById('empleadoId').value,
         nombre: nombre,
@@ -141,6 +233,7 @@ async function guardarEmpleado(event) {
         email: email,
         rol: rol
     };
+    
     if (modoEdicion) {
         formData.estado = document.getElementById('estado').value;
         if (password) {
@@ -149,6 +242,7 @@ async function guardarEmpleado(event) {
     } else {
         formData.password = password;
     }
+    
     try {
         const url = modoEdicion ? 
             '../../php/empleados/actualizar_empleado.php' : 
@@ -249,4 +343,79 @@ function filtrarEmpleados() {
         `;
         tbody.appendChild(tr);
     });
-} 
+}
+
+// Función para validar solo letras y espacios
+function validarSoloLetras(input) {
+    // Remover cualquier carácter que no sea letra o espacio
+    input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]/g, '');
+}
+
+// Función para validar email
+function validarEmail(input) {
+    // Permitir solo letras, números, @, puntos, guiones y guiones bajos
+    input.value = input.value.replace(/[^a-zA-Z0-9@._-]/g, '');
+}
+
+// Función para validar contraseña
+function validarPassword(input) {
+    // Permitir letras, números y símbolos específicos
+    input.value = input.value.replace(/[^a-zA-Z0-9!@#$%^&*()._-]/g, '');
+}
+
+// Función para prevenir entrada de números en campos de texto
+function bloquearNumeros(event) {
+    const char = String.fromCharCode(event.which || event.keyCode);
+    const regex = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]$/;
+    
+    // Permitir teclas especiales (backspace, delete, tab, escape, enter, etc.)
+    if (event.keyCode === 8 || event.keyCode === 9 || event.keyCode === 27 || 
+        event.keyCode === 13 || event.keyCode === 46 || 
+        (event.keyCode >= 35 && event.keyCode <= 40)) {
+        return true;
+    }
+    
+    if (!regex.test(char)) {
+        event.preventDefault();
+        return false;
+    }
+    return true;
+}
+
+// Función para validar caracteres de email en tiempo real
+function validarEmailKeypress(event) {
+    const char = String.fromCharCode(event.which || event.keyCode);
+    const regex = /^[a-zA-Z0-9@._-]$/;
+    
+    // Permitir teclas especiales
+    if (event.keyCode === 8 || event.keyCode === 9 || event.keyCode === 27 || 
+        event.keyCode === 13 || event.keyCode === 46 || 
+        (event.keyCode >= 35 && event.keyCode <= 40)) {
+        return true;
+    }
+    
+    if (!regex.test(char)) {
+        event.preventDefault();
+        return false;
+    }
+    return true;
+}
+
+// Función para validar caracteres de contraseña en tiempo real
+function validarPasswordKeypress(event) {
+    const char = String.fromCharCode(event.which || event.keyCode);
+    const regex = /^[a-zA-Z0-9!@#$%^&*()._-]$/;
+    
+    // Permitir teclas especiales
+    if (event.keyCode === 8 || event.keyCode === 9 || event.keyCode === 27 || 
+        event.keyCode === 13 || event.keyCode === 46 || 
+        (event.keyCode >= 35 && event.keyCode <= 40)) {
+        return true;
+    }
+    
+    if (!regex.test(char)) {
+        event.preventDefault();
+        return false;
+    }
+    return true;
+}
