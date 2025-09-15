@@ -167,26 +167,33 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <h2 id="modalTitle">Agregar Proveedor</h2>
                         <span class="close-button" onclick="cerrarModal()">&times;</span>
                     </div>
-                    <form id="supplierForm" class="form-grid-2col" action="../../php/guardar_proveedor.php" method="POST">
+                    <form id="supplierForm" class="form-grid-2col" action="../../php/guardar_proveedor.php" method="POST" onsubmit="return validarFormularioProveedor()">
                         <input type="hidden" id="proveedor_id" name="proveedor_id">
                         <div class="form-group">
-                            <label for="nombre">Nombre de la Empresa</label>
-                            <input type="text" id="nombre" name="nombre" required>
+                            <label for="nombre">Nombre de la Empresa *</label>
+                            <input type="text" id="nombre" name="nombre" required maxlength="100" 
+                                   placeholder="Ej: Distribuidora San Pedro">
+                            <small class="form-hint">Solo letras y espacios, sin números ni caracteres especiales</small>
                         </div>
                         <div class="form-group">
-                            <label for="contacto">Nombre del Contacto</label>
-                            <input type="text" id="contacto" name="contacto" required>
+                            <label for="contacto">Nombre del Contacto *</label>
+                            <input type="text" id="contacto" name="contacto" required maxlength="100"
+                                   placeholder="Ej: María González">
+                            <small class="form-hint">Solo letras y espacios, sin números ni caracteres especiales</small>
                         </div>
                         <div class="form-group">
-                            <label for="telefono">Teléfono</label>
-                            <input type="tel" id="telefono" name="telefono" required>
+                            <label for="telefono">Teléfono *</label>
+                            <input type="tel" id="telefono" name="telefono" required maxlength="20"
+                                   placeholder="Ej: +56 9 1234 5678">
+                            <small class="form-hint">Mínimo 8 dígitos</small>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required maxlength="100"
+                                   placeholder="Ej: contacto@empresa.com">
                         </div>
                         <div class="form-group">
-                            <label for="categoria">Categoría de Producto</label>
+                            <label for="categoria">Categoría de Producto *</label>
                             <select id="categoria" name="categoria" required>
                                 <option value="">Seleccionar categoría...</option>
                                 <option value="cafe">Café</option>
@@ -196,8 +203,10 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="direccion">Dirección</label>
-                            <textarea id="direccion" name="direccion" rows="3" required></textarea>
+                            <label for="direccion">Dirección *</label>
+                            <textarea id="direccion" name="direccion" rows="3" required maxlength="255"
+                                      placeholder="Dirección completa del proveedor"></textarea>
+                            <small class="form-hint">Mínimo 5 caracteres</small>
                         </div>
                         <div class="form-group">
                             <label for="calificacion">Calificación</label>
@@ -211,7 +220,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="estado">Estado</label>
+                            <label for="estado">Estado *</label>
                             <select id="estado" name="estado" required>
                                 <option value="activo">Activo</option>
                                 <option value="inactivo">Inactivo</option>
@@ -226,6 +235,263 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </main>
     </div>
+    <script>
+    // Validación completa del formulario de proveedores
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.getElementById('supplierForm');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                if (!validarFormularioProveedor()) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    return false;
+                }
+            });
+        }
+    });
+
+    function validarFormularioProveedor() {
+        // Limpiar errores previos
+        limpiarErroresCampos();
+        
+        // Obtener valores de los campos
+        var nombre = document.getElementById('nombre').value.trim();
+        var contacto = document.getElementById('contacto').value.trim();
+        var telefono = document.getElementById('telefono').value.trim();
+        var email = document.getElementById('email').value.trim();
+        var categoria = document.getElementById('categoria').value;
+        var direccion = document.getElementById('direccion').value.trim();
+        var estado = document.getElementById('estado').value;
+        
+        var errores = [];
+        var camposConError = [];
+        
+        // Validación de nombre (solo letras y espacios, SIN números)
+        var soloLetrasEspacios = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+        var contieneNumeros = /\d/;
+        var contieneCaracteresEspeciales = /[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/;
+        
+        if (!nombre) {
+            errores.push('El nombre de la empresa es obligatorio.');
+            camposConError.push('nombre');
+        } else if (nombre.length < 2) {
+            errores.push('El nombre debe tener al menos 2 caracteres.');
+            camposConError.push('nombre');
+        } else if (contieneNumeros.test(nombre)) {
+            errores.push('El nombre de la empresa no puede contener números.');
+            camposConError.push('nombre');
+        } else if (contieneCaracteresEspeciales.test(nombre)) {
+            errores.push('El nombre de la empresa no puede contener caracteres especiales (símbolos, puntuación, etc.).');
+            camposConError.push('nombre');
+        } else if (!soloLetrasEspacios.test(nombre)) {
+            errores.push('El nombre de la empresa solo puede contener letras y espacios.');
+            camposConError.push('nombre');
+        }
+        
+        // Validación de contacto (solo letras y espacios, SIN números)
+        var soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+        if (!contacto) {
+            errores.push('El nombre del contacto es obligatorio.');
+            camposConError.push('contacto');
+        } else if (contacto.length < 2) {
+            errores.push('El nombre del contacto debe tener al menos 2 caracteres.');
+            camposConError.push('contacto');
+        } else if (contieneNumeros.test(contacto)) {
+            errores.push('El nombre del contacto no puede contener números.');
+            camposConError.push('contacto');
+        } else if (contieneCaracteresEspeciales.test(contacto)) {
+            errores.push('El nombre del contacto no puede contener caracteres especiales (símbolos, puntuación, etc.).');
+            camposConError.push('contacto');
+        } else if (!soloLetras.test(contacto)) {
+            errores.push('El nombre del contacto solo puede contener letras y espacios.');
+            camposConError.push('contacto');
+        }
+        
+        // Validación de teléfono
+        var telefonoRegex = /^[+]?[\d\s-()]+$/;
+        if (!telefono) {
+            errores.push('El teléfono es obligatorio.');
+            camposConError.push('telefono');
+        } else if (!telefonoRegex.test(telefono)) {
+            errores.push('El teléfono solo puede contener números, espacios, guiones, paréntesis y el símbolo +');
+            camposConError.push('telefono');
+        } else if (telefono.replace(/[\s-()]/g, '').length < 8) {
+            errores.push('El teléfono debe tener al menos 8 dígitos.');
+            camposConError.push('telefono');
+        }
+        
+        // Validación de email
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email) {
+            errores.push('El email es obligatorio.');
+            camposConError.push('email');
+        } else if (!emailRegex.test(email)) {
+            errores.push('Por favor ingrese un email válido.');
+            camposConError.push('email');
+        }
+        
+        // Validación de categoría
+        if (!categoria) {
+            errores.push('Debe seleccionar una categoría.');
+            camposConError.push('categoria');
+        }
+        
+        // Validación de dirección
+        if (!direccion) {
+            errores.push('La dirección es obligatoria.');
+            camposConError.push('direccion');
+        } else if (direccion.length < 5) {
+            errores.push('La dirección debe tener al menos 5 caracteres.');
+            camposConError.push('direccion');
+        }
+        
+        // Validación de estado
+        if (!estado) {
+            errores.push('Debe seleccionar un estado.');
+            camposConError.push('estado');
+        }
+        
+        // Marcar campos con errores
+        camposConError.forEach(function(campo) {
+            marcarCampoConError(campo);
+        });
+        
+        // Mostrar errores si existen
+        if (errores.length > 0) {
+            var mensajeError = '❌ SE ENCONTRARON LOS SIGUIENTES ERRORES:\n\n';
+            errores.forEach(function(error, index) {
+                mensajeError += '• ' + error + '\n';
+            });
+            mensajeError += '\n⚠️ Por favor corrija los campos marcados en rojo antes de continuar.';
+            alert(mensajeError);
+            
+            // Hacer scroll al primer campo con error
+            if (camposConError.length > 0) {
+                var primerCampoError = document.getElementById(camposConError[0]);
+                if (primerCampoError) {
+                    primerCampoError.focus();
+                    primerCampoError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+            
+            return false;
+        }
+        
+        // Si todo está correcto, mostrar confirmación
+        var confirmacion = confirm('¿Está seguro de que desea guardar este proveedor con la información ingresada?');
+        if (!confirmacion) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    function limpiarErroresCampos() {
+        // Remover clase de error de todos los campos
+        var campos = ['nombre', 'contacto', 'telefono', 'email', 'categoria', 'direccion', 'estado'];
+        campos.forEach(function(campo) {
+            var elemento = document.getElementById(campo);
+            if (elemento) {
+                elemento.classList.remove('error');
+            }
+        });
+    }
+
+    function marcarCampoConError(nombreCampo) {
+        var campo = document.getElementById(nombreCampo);
+        if (campo) {
+            campo.classList.add('error');
+        }
+    }
+
+    function validarCampoEnTiempoReal(nombreCampo) {
+        var campo = document.getElementById(nombreCampo);
+        if (campo) {
+            campo.addEventListener('input', function() {
+                campo.classList.remove('error');
+            });
+        }
+    }
+
+    // Agregar validación en tiempo real cuando se carga la página
+    document.addEventListener('DOMContentLoaded', function() {
+        var campos = ['nombre', 'contacto', 'telefono', 'email', 'categoria', 'direccion', 'estado'];
+        campos.forEach(validarCampoEnTiempoReal);
+        
+        // Validación especial para campos de nombre (solo letras)
+        validarSoloLetras('nombre');
+        validarSoloLetras('contacto');
+    });
+
+    function validarSoloLetras(nombreCampo) {
+        var campo = document.getElementById(nombreCampo);
+        if (campo) {
+            campo.addEventListener('input', function(e) {
+                var valor = e.target.value;
+                var valorLimpio = valor.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '');
+                
+                if (valor !== valorLimpio) {
+                    e.target.value = valorLimpio;
+                    // Mostrar mensaje temporal
+                    mostrarMensajeTemporal(nombreCampo, 'Solo se permiten letras y espacios');
+                }
+                
+                // Limpiar clase de error
+                campo.classList.remove('error');
+            });
+            
+            campo.addEventListener('keypress', function(e) {
+                var charCode = e.which || e.keyCode;
+                var char = String.fromCharCode(charCode);
+                
+                // Permitir teclas especiales (backspace, delete, enter, etc.)
+                if (charCode <= 32) return true;
+                
+                // Solo permitir letras y espacios
+                var soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]$/;
+                if (!soloLetras.test(char)) {
+                    e.preventDefault();
+                    
+                    // Efecto visual de prevención
+                    campo.classList.add('prevented-input');
+                    setTimeout(function() {
+                        campo.classList.remove('prevented-input');
+                    }, 300);
+                    
+                    mostrarMensajeTemporal(nombreCampo, 'Solo se permiten letras y espacios');
+                    return false;
+                }
+            });
+        }
+    }
+
+    function mostrarMensajeTemporal(nombreCampo, mensaje) {
+        var campo = document.getElementById(nombreCampo);
+        if (campo) {
+            // Remover mensaje anterior si existe
+            var mensajeAnterior = campo.parentNode.querySelector('.mensaje-temporal');
+            if (mensajeAnterior) {
+                mensajeAnterior.remove();
+            }
+            
+            // Crear nuevo mensaje
+            var mensajeDiv = document.createElement('div');
+            mensajeDiv.className = 'mensaje-temporal';
+            mensajeDiv.textContent = mensaje;
+            mensajeDiv.style.cssText = 'color: #dc3545; font-size: 0.8em; margin-top: 2px; font-style: italic;';
+            
+            // Insertar después del campo
+            campo.parentNode.insertBefore(mensajeDiv, campo.nextSibling);
+            
+            // Eliminar mensaje después de 3 segundos
+            setTimeout(function() {
+                if (mensajeDiv.parentNode) {
+                    mensajeDiv.remove();
+                }
+            }, 3000);
+        }
+    }
+    </script>
     <script src="../../js/proveedores.js"></script>
 </body>
 </html>

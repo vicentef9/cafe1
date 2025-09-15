@@ -160,9 +160,9 @@ $productos = $stmt_productos->fetchAll(PDO::FETCH_ASSOC);
                         <h2>Nueva Venta</h2>
                         <span class="close-button" onclick="cerrarModal()">&times;</span>
                     </div>
-                    <form id="saleForm" class="sales-form" onsubmit="procesarVenta(event)">
+                    <form id="saleForm" class="sales-form" onsubmit="return validarFormularioVenta(event)">
                         <div class="form-group">
-                            <label for="producto">Producto</label>
+                            <label for="producto">Producto *</label>
                             <select id="producto" name="producto" required onchange="actualizarPrecio()">
                                 <option value="">Seleccionar producto...</option>
                                 <?php foreach ($productos as $producto): ?>
@@ -173,23 +173,28 @@ $productos = $stmt_productos->fetchAll(PDO::FETCH_ASSOC);
                                 </option>
                                 <?php endforeach; ?>
                             </select>
+                            <small class="form-hint">Seleccione un producto disponible</small>
                         </div>
                         <div class="form-group">
-                            <label for="cantidad">Cantidad</label>
-                            <input type="number" id="cantidad" name="cantidad" min="1" value="1" required>
+                            <label for="cantidad">Cantidad *</label>
+                            <input type="number" id="cantidad" name="cantidad" min="1" max="100" value="1" required
+                                   placeholder="Ej: 2">
+                            <small class="form-hint">Cantidad entre 1 y 100 unidades</small>
                         </div>
                         <div class="form-group">
-                            <label for="metodoPago">Método de Pago</label>
+                            <label for="metodoPago">Método de Pago *</label>
                             <select id="metodoPago" name="metodoPago" required>
+                                <option value="">Seleccionar método de pago...</option>
                                 <option value="efectivo">Efectivo</option>
                                 <option value="tarjeta">Tarjeta</option>
                                 <option value="transferencia">Transferencia</option>
                             </select>
+                            <small class="form-hint">Forma de pago de la venta</small>
                         </div>
                         <div class="cart-summary">
                             <h3>Resumen de la Venta</h3>
                             <div id="cartItems">
-                                <!-- Los items se agregarán dinámicamente -->
+                                <p class="empty-cart">El carrito está vacío</p>
                             </div>
                             <div class="cart-total">
                                 <span>Total:</span>
@@ -252,6 +257,140 @@ $productos = $stmt_productos->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <script>
+    // Validación completa del formulario de ventas
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.getElementById('saleForm');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                if (!validarFormularioVenta()) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    return false;
+                }
+            });
+        }
+        
+        // Agregar validación en tiempo real
+        var campos = ['producto', 'cantidad', 'metodoPago'];
+        campos.forEach(validarCampoEnTiempoReal);
+    });
+
+    function validarFormularioVenta() {
+        // Limpiar errores previos
+        limpiarErroresCampos();
+        
+        // Obtener valores de los campos
+        var producto = document.getElementById('producto').value;
+        var cantidad = document.getElementById('cantidad').value;
+        var metodoPago = document.getElementById('metodoPago').value;
+        
+        var errores = [];
+        var camposConError = [];
+        
+        // Validación de producto
+        if (!producto) {
+            errores.push('Debe seleccionar un producto.');
+            camposConError.push('producto');
+        }
+        
+        // Validación de cantidad
+        if (!cantidad || cantidad === '') {
+            errores.push('La cantidad es obligatoria.');
+            camposConError.push('cantidad');
+        } else {
+            var cantidadNum = parseInt(cantidad);
+            if (cantidadNum <= 0) {
+                errores.push('La cantidad debe ser mayor a 0.');
+                camposConError.push('cantidad');
+            } else if (cantidadNum > 100) {
+                errores.push('La cantidad no puede ser mayor a 100 unidades por transacción.');
+                camposConError.push('cantidad');
+            }
+            
+            // Verificar stock disponible si hay producto seleccionado
+            if (producto) {
+                var selectProducto = document.getElementById('producto');
+                var stockDisponible = parseInt(selectProducto.options[selectProducto.selectedIndex].dataset.stock);
+                if (cantidadNum > stockDisponible) {
+                    errores.push('La cantidad solicitada (' + cantidadNum + ') excede el stock disponible (' + stockDisponible + ').');
+                    camposConError.push('cantidad');
+                }
+            }
+        }
+        
+        // Validación de método de pago
+        if (!metodoPago) {
+            errores.push('Debe seleccionar un método de pago.');
+            camposConError.push('metodoPago');
+        }
+        
+        // Marcar campos con errores
+        camposConError.forEach(function(campo) {
+            marcarCampoConError(campo);
+        });
+        
+        // Mostrar errores si existen
+        if (errores.length > 0) {
+            var mensajeError = '❌ SE ENCONTRARON LOS SIGUIENTES ERRORES:\n\n';
+            errores.forEach(function(error, index) {
+                mensajeError += '• ' + error + '\n';
+            });
+            mensajeError += '\n⚠️ Por favor corrija los campos marcados en rojo antes de continuar.';
+            alert(mensajeError);
+            
+            // Hacer scroll al primer campo con error
+            if (camposConError.length > 0) {
+                var primerCampoError = document.getElementById(camposConError[0]);
+                if (primerCampoError) {
+                    primerCampoError.focus();
+                    primerCampoError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+            
+            return false;
+        }
+        
+        return true;
+    }
+
+    function validarCarrito() {
+        if (carrito.length === 0) {
+            alert('❌ No hay productos en el carrito.\n\n⚠️ Debe agregar al menos un producto antes de completar la venta.');
+            return false;
+        }
+        
+        return true;
+    }
+
+    function limpiarErroresCampos() {
+        // Remover clase de error de todos los campos
+        var campos = ['producto', 'cantidad', 'metodoPago'];
+        campos.forEach(function(campo) {
+            var elemento = document.getElementById(campo);
+            if (elemento) {
+                elemento.classList.remove('error');
+            }
+        });
+    }
+
+    function marcarCampoConError(nombreCampo) {
+        var campo = document.getElementById(nombreCampo);
+        if (campo) {
+            campo.classList.add('error');
+        }
+    }
+
+    function validarCampoEnTiempoReal(nombreCampo) {
+        var campo = document.getElementById(nombreCampo);
+        if (campo) {
+            campo.addEventListener('input', function() {
+                campo.classList.remove('error');
+            });
+            campo.addEventListener('change', function() {
+                campo.classList.remove('error');
+            });
+        }
+    }
         // Variables globales
         let carrito = [];
 
@@ -496,12 +635,30 @@ $productos = $stmt_productos->fetchAll(PDO::FETCH_ASSOC);
         function procesarVenta(event) {
             event.preventDefault();
             
-            if (carrito.length === 0) {
-                alert('El carrito está vacío');
-                return;
+            // Validar que el carrito no esté vacío
+            if (!validarCarrito()) {
+                return false;
             }
 
+            // Validar método de pago
             const metodoPago = document.getElementById('metodoPago').value;
+            if (!metodoPago) {
+                alert('❌ Debe seleccionar un método de pago antes de completar la venta.');
+                marcarCampoConError('metodoPago');
+                return false;
+            }
+            
+            // Confirmación final
+            const confirmacion = confirm(
+                '¿Está seguro de que desea procesar esta venta?\n\n' +
+                'Productos: ' + carrito.length + ' item(s)\n' +
+                'Total: ' + document.getElementById('totalAmount').textContent + '\n' +
+                'Método de pago: ' + metodoPago.charAt(0).toUpperCase() + metodoPago.slice(1)
+            );
+            
+            if (!confirmacion) {
+                return false;
+            }
             
             const ventaData = {
                 productos: carrito,
@@ -518,9 +675,9 @@ $productos = $stmt_productos->fetchAll(PDO::FETCH_ASSOC);
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    let mensaje = 'Venta procesada con éxito';
+                    let mensaje = '✅ Venta procesada con éxito';
                     if (data.estado === 'pendiente') {
-                        mensaje += '. Estado: PENDIENTE - ' + (data.mensaje || 'Revisar stock de productos');
+                        mensaje += '. \n\n⚠️ Estado: PENDIENTE - ' + (data.mensaje || 'Revisar stock de productos');
                     }
                     alert(mensaje);
                     cerrarModal();

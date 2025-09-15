@@ -144,7 +144,7 @@ try {
                 <h3 id="modalTitle">Agregar Producto al Inventario</h3>
                 <span class="close" onclick="cerrarModal()">&times;</span>
             </div>
-            <form id="inventoryForm" onsubmit="guardarInventario(event)">
+            <form id="inventoryForm" onsubmit="return validarFormularioInventario(event)">
                 <input type="hidden" id="inventario_id" name="inventario_id">
                 
                 <div class="form-group">
@@ -152,27 +152,36 @@ try {
                     <select id="producto" name="producto_id" required>
                         <option value="">Seleccionar producto...</option>
                     </select>
+                    <small class="form-hint">Seleccione un producto de la lista</small>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="stockActual">Stock Actual *</label>
-                        <input type="number" id="stockActual" name="stock_actual" min="0" required>
+                        <input type="number" id="stockActual" name="stock_actual" min="0" required
+                               placeholder="Ej: 50">
+                        <small class="form-hint">Cantidad disponible actualmente</small>
                     </div>
                     <div class="form-group">
                         <label for="stockMinimo">Stock Mínimo *</label>
-                        <input type="number" id="stockMinimo" name="stock_minimo" min="0" required>
+                        <input type="number" id="stockMinimo" name="stock_minimo" min="0" required
+                               placeholder="Ej: 10">
+                        <small class="form-hint">Nivel mínimo antes de reabastecer</small>
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="precioBase">Precio Base *</label>
-                        <input type="number" id="precioBase" name="precio_base" step="0.01" min="0" required>
+                        <input type="number" id="precioBase" name="precio_base" step="0.01" min="0" required
+                               placeholder="Ej: 2500.00">
+                        <small class="form-hint">Precio en pesos chilenos</small>
                     </div>
                     <div class="form-group">
                         <label for="descuento">Descuento (%)</label>
-                        <input type="number" id="descuento" name="descuento" min="0" max="100" step="0.01" value="0">
+                        <input type="number" id="descuento" name="descuento" min="0" max="100" step="0.01" value="0"
+                               placeholder="Ej: 10">
+                        <small class="form-hint">Descuento opcional (0-100%)</small>
                     </div>
                 </div>
                 
@@ -182,7 +191,9 @@ try {
                 
                 <div class="form-group">
                     <label for="notas">Notas</label>
-                    <textarea id="notas" name="notas" rows="3"></textarea>
+                    <textarea id="notas" name="notas" rows="3" maxlength="500"
+                              placeholder="Notas adicionales sobre el producto (opcional)"></textarea>
+                    <small class="form-hint">Opcional: máximo 500 caracteres</small>
                 </div>
                 
                 <div class="form-actions">
@@ -194,6 +205,175 @@ try {
     </div>
 
     <script>
+    // Validación completa del formulario de inventario
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.getElementById('inventoryForm');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                if (!validarFormularioInventario()) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    return false;
+                }
+            });
+        }
+        
+        // Agregar validación en tiempo real
+        var campos = ['producto', 'stockActual', 'stockMinimo', 'precioBase', 'descuento', 'notas'];
+        campos.forEach(validarCampoEnTiempoReal);
+    });
+
+    function validarFormularioInventario() {
+        // Limpiar errores previos
+        limpiarErroresCampos();
+        
+        // Obtener valores de los campos
+        var producto = document.getElementById('producto').value;
+        var stockActual = document.getElementById('stockActual').value;
+        var stockMinimo = document.getElementById('stockMinimo').value;
+        var precioBase = document.getElementById('precioBase').value;
+        var descuento = document.getElementById('descuento').value;
+        var notas = document.getElementById('notas').value.trim();
+        
+        var errores = [];
+        var camposConError = [];
+        
+        // Validación de producto
+        if (!producto) {
+            errores.push('Debe seleccionar un producto.');
+            camposConError.push('producto');
+        }
+        
+        // Validación de stock actual
+        if (!stockActual || stockActual === '') {
+            errores.push('El stock actual es obligatorio.');
+            camposConError.push('stockActual');
+        } else {
+            var stockActualNum = parseInt(stockActual);
+            if (stockActualNum < 0) {
+                errores.push('El stock actual no puede ser negativo.');
+                camposConError.push('stockActual');
+            } else if (stockActualNum > 10000) {
+                errores.push('El stock actual no puede ser mayor a 10,000 unidades.');
+                camposConError.push('stockActual');
+            }
+        }
+        
+        // Validación de stock mínimo
+        if (!stockMinimo || stockMinimo === '') {
+            errores.push('El stock mínimo es obligatorio.');
+            camposConError.push('stockMinimo');
+        } else {
+            var stockMinimoNum = parseInt(stockMinimo);
+            if (stockMinimoNum < 0) {
+                errores.push('El stock mínimo no puede ser negativo.');
+                camposConError.push('stockMinimo');
+            } else if (stockMinimoNum > 1000) {
+                errores.push('El stock mínimo no puede ser mayor a 1,000 unidades.');
+                camposConError.push('stockMinimo');
+            }
+            
+            // Verificar que stock mínimo no sea mayor que stock actual
+            if (stockActual && stockMinimo && parseInt(stockMinimo) > parseInt(stockActual)) {
+                errores.push('El stock mínimo no puede ser mayor al stock actual.');
+                camposConError.push('stockMinimo');
+            }
+        }
+        
+        // Validación de precio base
+        if (!precioBase || precioBase === '') {
+            errores.push('El precio base es obligatorio.');
+            camposConError.push('precioBase');
+        } else {
+            var precioBaseNum = parseFloat(precioBase);
+            if (precioBaseNum <= 0) {
+                errores.push('El precio base debe ser mayor a 0.');
+                camposConError.push('precioBase');
+            } else if (precioBaseNum > 100000) {
+                errores.push('El precio base no puede ser mayor a $100,000.');
+                camposConError.push('precioBase');
+            }
+        }
+        
+        // Validación de descuento
+        if (descuento && descuento !== '') {
+            var descuentoNum = parseFloat(descuento);
+            if (descuentoNum < 0 || descuentoNum > 100) {
+                errores.push('El descuento debe estar entre 0% y 100%.');
+                camposConError.push('descuento');
+            }
+        }
+        
+        // Validación de notas (opcional)
+        if (notas && notas.length > 500) {
+            errores.push('Las notas no pueden exceder 500 caracteres.');
+            camposConError.push('notas');
+        }
+        
+        // Marcar campos con errores
+        camposConError.forEach(function(campo) {
+            marcarCampoConError(campo);
+        });
+        
+        // Mostrar errores si existen
+        if (errores.length > 0) {
+            var mensajeError = '❌ SE ENCONTRARON LOS SIGUIENTES ERRORES:\n\n';
+            errores.forEach(function(error, index) {
+                mensajeError += '• ' + error + '\n';
+            });
+            mensajeError += '\n⚠️ Por favor corrija los campos marcados en rojo antes de continuar.';
+            alert(mensajeError);
+            
+            // Hacer scroll al primer campo con error
+            if (camposConError.length > 0) {
+                var primerCampoError = document.getElementById(camposConError[0]);
+                if (primerCampoError) {
+                    primerCampoError.focus();
+                    primerCampoError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+            
+            return false;
+        }
+        
+        // Si todo está correcto, mostrar confirmación
+        var confirmacion = confirm('¿Está seguro de que desea guardar este producto en el inventario con la información ingresada?');
+        if (!confirmacion) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    function limpiarErroresCampos() {
+        // Remover clase de error de todos los campos
+        var campos = ['producto', 'stockActual', 'stockMinimo', 'precioBase', 'descuento', 'notas'];
+        campos.forEach(function(campo) {
+            var elemento = document.getElementById(campo);
+            if (elemento) {
+                elemento.classList.remove('error');
+            }
+        });
+    }
+
+    function marcarCampoConError(nombreCampo) {
+        var campo = document.getElementById(nombreCampo);
+        if (campo) {
+            campo.classList.add('error');
+        }
+    }
+
+    function validarCampoEnTiempoReal(nombreCampo) {
+        var campo = document.getElementById(nombreCampo);
+        if (campo) {
+            campo.addEventListener('input', function() {
+                campo.classList.remove('error');
+            });
+            campo.addEventListener('change', function() {
+                campo.classList.remove('error');
+            });
+        }
+    }
 // Variable global para almacenar los datos originales del inventario  
 let inventarioData = [];
 
