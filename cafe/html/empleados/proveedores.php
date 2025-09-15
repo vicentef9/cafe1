@@ -9,10 +9,11 @@ if (!isset($_SESSION['usuario_id'])) {
 }
 
 // Obtener el rol del usuario
+
 $rol = $_SESSION['rol'];
 
 // Verificar si el usuario tiene permisos para acceder a esta página
-if ($rol !== 'empleado' && $rol !== 'admin') {
+if ($rol !== 'empleado' && $rol !== 'administrador') {
     header('Location: ../autenticacion/login.php');
     exit();
 }
