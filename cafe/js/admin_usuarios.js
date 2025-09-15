@@ -1,4 +1,3 @@
-
 // Cargar usuarios al iniciar la página
 document.addEventListener('DOMContentLoaded', () => {
     cargarUsuarios();
@@ -10,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('userForm').addEventListener('submit', function(event) {
     event.preventDefault();
     guardarUsuario();
-});
+});document.getElementById('password').setAttribute('required', 'required'); // Contraseña requerida al creardocument.getElementById('password').setAttribute('required', 'required'); // Contraseña requerida al crear
 
 function mostrarFormulario() {
     document.getElementById('modalTitle').textContent = 'Agregar Usuario';

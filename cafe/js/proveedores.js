@@ -110,8 +110,12 @@ function editarProveedor(id) {
 // Función para eliminar un proveedor
 function eliminarProveedor(id) {
     if (confirm('¿Está seguro de que desea eliminar este proveedor?')) {
-        fetch(`../../php/eliminar_proveedor.php?id=${id}`, {
-            method: 'DELETE'
+        fetch('../../php/eliminar_proveedor.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `id=${encodeURIComponent(id)}`
         })
         .then(response => response.json())
         .then(data => {

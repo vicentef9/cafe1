@@ -78,7 +78,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <option value="cafe">Café</option>
                             <option value="postres">Postres</option>
                             <option value="bebidas">Bebidas</option>
-                            <option value="alimentos">Alimentos</option>
+                            <option value="insumos">Insumos</option>
                         </select>
                     </div>
                 </div>
